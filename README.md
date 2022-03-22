@@ -1,4 +1,4 @@
-Run Fullnode Aptos
+Run Fullnode Aptos in Unbuntu OS
 
 Minimum Configuration If running node for dev and test purposes:
 CPU: 2 cores Memory: 4GiB RAM
