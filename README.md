@@ -1,19 +1,15 @@
-# aptos
 Run Fullnode Aptos
-1. Cấu hình tối thiểu
-Nếu chạy node node cho mục đích dev và test:
 
+Minimum Configuration If running node for dev and test purposes:
 CPU: 2 cores Memory: 4GiB RAM
 
-Chạy node cho product cấu hình tối thiểu dưới đây:
+Run node for the product with the following minimum configuration:
 
-CPU: Intel Xeon Skylake hoặc mới hơn, 4 nhân.
+CPU: Intel Xeon Skylake or later, 4 cores.
 
 Memory: 8GiB RAM
 
-2. Hướng dẫn cài đặt từng bước
-Bước 1 Cài Screen và Docker
-
+Step-by-step installation instructions Step 1 Install Screen and Docker
 sudo apt install screen
 
 screen -S homepage
@@ -24,13 +20,13 @@ sudo apt install ca-certificates curl gnupg lsb-release wget -y
 
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release) -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 sudo apt update
 
 sudo apt install docker-ce docker-ce-cli containerd.io -y
 
-Bước 2 Cài Docker Compose
+Step 2 Install Docker Compose
 
 mkdir -p ~/.docker/cli-plugins/
 
@@ -40,7 +36,7 @@ chmod +x ~/.docker/cli-plugins/docker-compose
 
 sudo chown $USER /var/run/docker.sock
 
-BƯỚC 3 Tạo folder Aptos để Download Config Files
+STEP 3 Create Aptos folder to Download Config Files
 
 mkdir $HOME/aptos
 
@@ -54,18 +50,18 @@ wget https://devnet.aptoslabs.com/genesis.blob
 
 wget https://devnet.aptoslabs.com/waypoint.txt
 
-BƯỚC 4 Chạy Node
+STEP 4 Run Node
 
 docker compose up -d
 
 Well done , you are in.
 
-** Code hữu ích**
+** Useful Codes**
 
-Kiểm tra trạng thái sync
+Check sync status
 
 curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type
 
-Xem log
+View log
 
 docker logs -f aptos-fullnode-1 --tail 5000
