@@ -20,8 +20,8 @@ full_node_networks:
       listen_address: "/ip4/127.0.0.1/tcp/6180"
       identity:
         type: "from_config"
-        key: "606FFA4316D451C5599005E3E9BACAECB7303F59D2ACC8346E9DFA70DDAC3058"
-        peer_id: "f6348ddf8ae40babe4f3dd3a22ebfe51"
+        key: "Private Key"
+        peer_id: "Peer Id"
 
       # Define the upstream peers to connect to
       seeds:
