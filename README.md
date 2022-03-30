@@ -1,4 +1,4 @@
-Run Fullnode Aptos in Unbuntu OS
+# Run Fullnode Aptos in Unbuntu OS
 
 Minimum Configuration If running node for dev and test purposes:
 CPU: 2 cores Memory: 4GiB RAM
@@ -17,95 +17,98 @@ Installation may take 10-30 minutes
 
 Install docker if it is not installed
 
-sudo apt update
+`sudo apt update`
 
-sudo apt install ca-certificates curl gnupg lsb-release wget jq sed -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+`sudo apt install ca-certificates curl gnupg lsb-release wget jq sed -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg`
 
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+`echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null`
 
-sudo apt update
+`sudo apt update`
 
 
-sudo apt install docker-ce docker-ce-cli containerd.io -y
+`sudo apt install docker-ce docker-ce-cli containerd.io -y`
 
 Checking
 
-docker version
+`docker version`
 
 ## If there is no error in the terminal, then everything is OK
 Client: Docker Engine - Community...
-Install docker compose if not installed
-mkdir -p ~/.docker/cli-plugins/
-curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-chmod +x ~/.docker/cli-plugins/docker-compose
-sudo chown $USER /var/run/docker.sock
-Checking
+### Install docker compose if not installed
+`mkdir -p ~/.docker/cli-plugins/`
+`curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose`
+`chmod +x ~/.docker/cli-plugins/docker-compose`
+`sudo chown $USER /var/run/docker.sock`
+### Checking
 
-docker compose version
+`docker compose version`
 
 ## If there is no error in the terminal, then everything is OK
 Docker Compose version v2.2.3
 Create a folder aptos in which we will download config files
 
-mkdir $HOME/aptos
+`mkdir $HOME/aptos`
 
-cd $HOME/aptos
+`cd $HOME/aptos`
 
-wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/docker-compose.yaml
+`wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/docker-compose.yaml`
 
-wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/public_full_node.yaml
+`wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/public_full_node.yaml`
 
-wget https://devnet.aptoslabs.com/genesis.blob
+`wget https://devnet.aptoslabs.com/genesis.blob`
 
-wget https://devnet.aptoslabs.com/waypoint.txt
+`wget https://devnet.aptoslabs.com/waypoint.txt`
 
 Create an identity folder where we will store a unique node ID
 
-mkdir $HOME/aptos/identity
+`mkdir $HOME/aptos/identity`
 
 Generating a unique ID for a node
 
-docker run --rm --name aptos_tools -d -i aptoslab/tools:devnet
-docker exec -it aptos_tools aptos-operational-tool generate-key --encoding hex --key-type x25519 --key-file $HOME/private-key.txt
+`docker run --rm --name aptos_tools -d -i aptoslab/tools:devnet`
+`docker exec -it aptos_tools aptos-operational-tool generate-key --encoding hex --key-type x25519 --key-file $HOME/private-key.txt`
 
-docker exec -it aptos_tools cat $HOME/private-key.txt > $HOME/aptos/identity/private-key.txt
+`docker exec -it aptos_tools cat $HOME/private-key.txt > $HOME/aptos/identity/private-key.txt`
 
-docker exec -it aptos_tools aptos-operational-tool extract-peer-from-file --encoding hex --key-file $HOME/private-key.txt --output-file $HOME/peer-info.yaml > $HOME /aptos/identity/id.json
-PEER_ID=$(cat $HOME/aptos/identity/id.json | jq -r '.Result | keys[]')
-PRIVATE_KEY=$(cat $HOME/aptos/identity/private-key.txt)
+`docker exec -it aptos_tools aptos-operational-tool extract-peer-from-file --encoding hex --key-file $HOME/private-key.txt --output-file $HOME/peer-info.yaml > $HOME /aptos/identity/id.json`
 
-docker stop aptos_tools
+`PEER_ID=$(cat $HOME/aptos/identity/id.json | jq -r '.Result | keys[]')`
+
+`PRIVATE_KEY=$(cat $HOME/aptos/identity/private-key.txt)`
+
+`docker stop aptos_tools`
 
 Set a unique node ID
-cd $HOME/aptos
+`cd $HOME/aptos`
 
-sed -i '/ discovery_method: "onchain"$/a\
+`sed -i '/ discovery_method: "onchain"$/a\
       identity:\
           type: "from_config"\
           key: "'$PRIVATE_KEY'"\
-          peer_id: "'$PEER_ID'"' public_full_node.yaml
+          peer_id: "'$PEER_ID'"' public_full_node.yaml`
 
 Data with node ID and private key will be stored on your HDD
 
 View private key
 
-cat $HOME/aptos/identity/private-key.txt
+`cat $HOME/aptos/identity/private-key.txt`
 
 View data with public identifiers
 
-cat $HOME/aptos/identity/id.json
+`cat $HOME/aptos/identity/id.json`
 
 Launching the node
 If the node is not running then
 
-docker compose up -d
+`docker compose up -d`
+
 If the node is already running then
 
-docker compose restart
+`docker compose restart`
 
 Checking the sync status
-curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type
+`curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type`
 
 Should look something like this
 
@@ -113,29 +116,31 @@ website url
 
 If you wish, you can see the logs
 
-docker logs -f aptos-fullnode-1 --tail 5000
+`docker logs -f aptos-fullnode-1 --tail 5000`
 
 Good luck
 
-Guide you to update to the new chain: Update Fullnode With New Releases
+# Guide you to update to the new chain: Update Fullnode With New Releases
 
 in the aptos folder:
-stop node :docker compose stop
+`stop node :docker compose stop`
 
-delete old files:
-rm genesis.blob
-rm waypoint.txt
-rm public_full_node.yaml
+### delete old files:
+`rm genesis.blob`
+`rm waypoint.txt`
+`rm public_full_node.yaml`
 
-Re-download the new file:
-wget https://devnet.aptoslabs.com/genesis.blob
-wget https://devnet.aptoslabs.com/waypoint.txt
-wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/public_full_node.yaml
+### Re-download the new file:
+`wget https://devnet.aptoslabs.com/genesis.blob`
+
+`wget https://devnet.aptoslabs.com/waypoint.txt`
+
+`wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/public_full_node.yaml`
 
 delete the data of the old string:
-delete db folder in this path :var/lib/docker/volumes/aptos_db/_data/db
+delete db folder in this path : `var/lib/docker/volumes/aptos_db/_data/db`
 
-restart node :docker compose restart
-sync check :curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type
+restart node : `docker compose restart`
+sync check :`curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type`
 
-check log :docker logs -f aptos-fullnode-1 --tail 5000
+check log :`docker logs -f aptos-fullnode-1 --tail 5000`
