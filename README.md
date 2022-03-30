@@ -144,3 +144,7 @@ restart node : `docker compose restart`
 sync check :`curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type`
 
 check log :`docker logs -f aptos-fullnode-1 --tail 5000`
+
+![This is an image](https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.15752-9/275563754_5008618015889184_2033242216791790752_n.png?_nc_cat=109&ccb=1-5&_nc_sid=ae9488&_nc_ohc=fvZBWJAI7-YAX997Dgy&_nc_ht=scontent.fsgn2-4.fna&oh=03_AVIzHxdok7qdkjxJTWkR1foGz0fmKdBX5Nes_T98QXU1Dg&oe=626A4EFD)
+
+
