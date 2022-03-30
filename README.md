@@ -37,9 +37,13 @@ Checking
 Client: Docker Engine - Community...
 ### Install docker compose if not installed
 `mkdir -p ~/.docker/cli-plugins/`
+
 `curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose`
+
 `chmod +x ~/.docker/cli-plugins/docker-compose`
+
 `sudo chown $USER /var/run/docker.sock`
+
 ### Checking
 
 `docker compose version`
