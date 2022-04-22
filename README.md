@@ -131,23 +131,25 @@ Good luck
 
 # Guide you to update to the new chain: Update Fullnode With New Releases
 
-in the aptos folder:
-`stop node :docker compose stop`
+# change to root user
+sudo su
 
-### delete old files:
-`rm genesis.blob`
-`rm waypoint.txt`
-`rm public_full_node.yaml`
+# stop docker
+cd $HOME/aptos
+docker compose down
 
-### Re-download the new file:
-`wget https://devnet.aptoslabs.com/genesis.blob`
+# delete old file
+rm -r /var/lib/docker/volumes/aptos_db/_data/db
+rm genesis.blob
+rm waypoint.txt
 
-`wget https://devnet.aptoslabs.com/waypoint.txt`
+# update file
+docker compose pull
+wget https://devnet.aptoslabs.com/genesis.blob
+wget https://devnet.aptoslabs.com/waypoint.txt
 
-`wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/public_full_node.yaml`
+docker compose up -d
 
-delete the data of the old string:
-delete db folder in this path : `var/lib/docker/volumes/aptos_db/_data/db`
 
 restart node : `docker compose restart`
 sync check :`curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type`
