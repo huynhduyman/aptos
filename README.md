@@ -80,7 +80,7 @@ Generating a unique ID for a node
 
 `docker exec -it aptos_tools cat $HOME/private-key.txt > $HOME/aptos/identity/private-key.txt`
 
-`docker exec -it aptos_tools aptos-operational-tool extract-peer-from-file --encoding hex --key-file $HOME/private-key.txt --output-file $HOME/peer-info.yaml > $HOME /aptos/identity/id.json`
+`docker exec -it aptos_tools aptos-operational-tool extract-peer-from-file --encoding hex --key-file $HOME/private-key.txt --output-file $HOME/peer-info.yaml > $HOME/aptos/identity/id.json`
 
 `PEER_ID=$(cat $HOME/aptos/identity/id.json | jq -r '.Result | keys[]')`
 
