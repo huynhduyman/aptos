@@ -146,11 +146,22 @@ rm genesis.blob
 rm waypoint.txt
 
 # update file
-docker compose pull
-wget https://devnet.aptoslabs.com/genesis.blob
-wget https://devnet.aptoslabs.com/waypoint.txt
+`cd ~/.aptos && docker-compose down`
 
-docker compose up -d
+`rm genesis.blob`
+
+`rm waypoint.txt`
+
+`sudo docker pull aptoslab/validator:testnet_317f80bb`
+
+`wget https://devnet.aptoslabs.com/genesis.blob`
+`wget https://devnet.aptoslabs.com/waypoint.txt`
+
+cd ~/.aptos && docker-compose restart
+
+Verify that your node is connecting to other peers on testnet. (Replace 127.0.0.1 with your Validator IP/DNS if deployed on the cloud)
+
+curl 127.0.0.1:9101/metrics 2> /dev/null | grep "aptos_connections{.*\"Validator\".*}"
 
 
 restart node : `docker compose restart`
