@@ -163,7 +163,7 @@ Verify that your node is connecting to other peers on testnet. (Replace 127.0.0.
 
 curl 127.0.0.1:9101/metrics 2> /dev/null | grep "aptos_connections{.*\"Validator\".*}"
 
-
+Restarting the node: `docker-compose up`
 restart node : `docker compose restart`
 sync check :`curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type`
 
